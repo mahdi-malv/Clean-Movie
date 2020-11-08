@@ -10,7 +10,6 @@ android {
     compileSdkVersion(30)
 
     defaultConfig {
-        applicationId = "ir.malv.cleanmovies"
         minSdkVersion(Versions.Build.minSdk)
         targetSdkVersion(Versions.Build.targetSdk)
         versionCode = Versions.versionCode

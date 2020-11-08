@@ -82,8 +82,8 @@
          }
 
          object Moshi {
-             const val moshi = "com.squareup.moshi:moshi:1.4.11"
-             const val codeGen = "com.squareup.moshi:moshi-kotlin-codegen:1.4.11"
+             const val moshi = "com.squareup.moshi:moshi:1.11.0"
+             const val codeGen = "com.squareup.moshi:moshi-kotlin-codegen:1.11.0"
          }
      }
 

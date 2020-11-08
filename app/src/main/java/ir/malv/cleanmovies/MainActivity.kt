@@ -14,6 +14,13 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            // TODO 1. Navigation - Specify routes
+            // TODO 2. Pages - Think about pages and each one's design
+            // TODO 3. Pages - Design
+            // TODO 4. Make a main view model or idunno multiple ones to handle connection to data module
+            // TODO 5. Dependencies - make sure everything exists
+
+
             CleanMoviesTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(color = MaterialTheme.colors.background) {
