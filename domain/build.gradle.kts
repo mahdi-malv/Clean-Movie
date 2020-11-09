@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.config.KotlinCompilerVersion
-
 plugins {
     id("java-library")
     id("kotlin")
@@ -11,6 +9,6 @@ java {
 }
 
 dependencies {
-    implementation(kotlin("stdlib", KotlinCompilerVersion.VERSION))
+    implementation(kotlin("stdlib", Libs.Kotlin.version))
     implementation(Libs.Kotlin.coroutinesCore)
 }

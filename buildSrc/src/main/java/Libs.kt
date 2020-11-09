@@ -8,7 +8,7 @@
      }
 
      object Gradle {
-         const val version = "4.2.0-alpha16"
+         const val plugin = "com.android.tools.build:gradle:4.2.0-alpha16"
      }
      // endregion
 
@@ -34,6 +34,14 @@
              const val compose = "androidx.navigation:navigation-compose:1.0.0-alpha01"
          }
 
+         object Hilt {
+             val android = "com.google.dagger:hilt-android:2.28-alpha"
+             val lifeCycle = "androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha02"
+             val hiltAndroidCompiler = "com.google.dagger:hilt-android-compiler:2.28-alpha"
+             val hiltCompiler = "androidx.hilt:hilt-compiler:1.0.0-alpha02"
+             val gradle = "com.google.dagger:hilt-android-gradle-plugin:2.28-alpha"
+         }
+
          object Compose {
              const val version = "1.0.0-alpha06"
              const val ui = "androidx.compose.ui:ui:$version"
@@ -53,6 +61,9 @@
          }
      }
 
+     object Utils {
+         const val markdown = "com.github.mukeshsolanki:MarkdownView-Android:1.0.6"
+     }
 
      object Google {
          const val material = "com.google.android.material:material:1.2.0"

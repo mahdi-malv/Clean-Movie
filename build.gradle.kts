@@ -4,8 +4,9 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:${Libs.Gradle.version}")
+        classpath(Libs.Gradle.plugin)
         classpath(kotlin("gradle-plugin", version = Libs.Kotlin.version))
+        classpath(Libs.AndroidX.Hilt.gradle)
     }
 }
 
@@ -13,6 +14,7 @@ allprojects {
     repositories {
         google()
         jcenter()
+        maven("https://jitpack.io")
     }
 }
 

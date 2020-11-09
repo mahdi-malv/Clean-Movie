@@ -9,8 +9,8 @@ import ir.malv.cleanmovies.domain.entity.User
 import ir.malv.cleanmovies.domain.repository.UserRepository
 
 class UserRepositoryImpl(
-  private val userMapper: UserMapper,
-  private val userApi: UserApi,
+    private val userApi: UserApi,
+    private val userMapper: UserMapper,
   private val appDatabase: AppDatabase
 ) : UserRepository {
 
@@ -27,17 +27,18 @@ class UserRepositoryImpl(
         return userMapper.transfer(savedUser, savedToken)
     }
 
-    override suspend fun login(email: String, password: String) {
+    override suspend fun login(email: String, password: String): User {
         val token = userApi.applyForToken(userName = email, password = password)
-        val user = userApi.getUserInfo("Bearer ${token.accessToken}")
-        currentUser = storeToken(token, user)
-
+        val userResponse = userApi.getUserInfo("Bearer ${token.accessToken}")
+        val user = storeToken(token, userResponse)
+        return user.also { currentUser = it }
     }
 
-    override suspend fun register(email: String, password: String, name: String) {
-        val user = userApi.registerUser(email = email, password = password, name = name)
+    override suspend fun register(email: String, password: String, name: String): User {
+        val userResponse = userApi.registerUser(email = email, password = password, name = name)
         val token = userApi.applyForToken(email, password)
-        currentUser = storeToken(token, user)
+        val user = storeToken(token, userResponse)
+        return user.also { currentUser = it }
     }
 
     private suspend fun storeToken(

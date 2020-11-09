@@ -1,10 +1,9 @@
-import org.jetbrains.kotlin.config.KotlinCompilerVersion
-
 plugins {
     id("com.android.application")
     kotlin("android")
     kotlin("kapt")
     kotlin("android.extensions")
+    id("dagger.hilt.android.plugin")
 }
 
 android {
@@ -44,7 +43,7 @@ android {
 
 dependencies {
     // Kotlin
-    implementation(kotlin("stdlib", KotlinCompilerVersion.VERSION))
+    implementation(kotlin("stdlib", version = Libs.Kotlin.version))
     implementation(Libs.Kotlin.coroutinesCore)
     implementation(Libs.Kotlin.coroutinesAndroid)
 
@@ -65,6 +64,12 @@ dependencies {
     // Navigation
     implementation(Libs.AndroidX.Navigation.compose)
 
+    // Hilt
+    implementation(Libs.AndroidX.Hilt.android)
+    implementation(Libs.AndroidX.Hilt.lifeCycle)
+    kapt(Libs.AndroidX.Hilt.hiltAndroidCompiler)
+    kapt(Libs.AndroidX.Hilt.hiltCompiler)
+
     // Local
     implementation(project(":domain"))
     implementation(project(":data"))
@@ -81,6 +86,9 @@ dependencies {
     implementation(Libs.Room.ktx)
     implementation(Libs.Room.runtime)
     kapt(Libs.Room.compiler)
+
+    // Utils
+    implementation(Libs.Utils.markdown)
 
     // Test
     testImplementation(Libs.Test.junit)
