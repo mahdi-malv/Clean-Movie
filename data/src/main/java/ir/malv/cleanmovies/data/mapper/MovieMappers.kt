@@ -13,10 +13,11 @@ import ir.malv.cleanmovies.domain.entity.PageData
 class DigestMovieMapper : Mapper<MovieDigestResponse, Movie> {
     override fun mapFrom(from: MovieDigestResponse): Movie {
         return Movie(
-          title = from.title,
-          id = from.id,
-          genres = from.genres,
-          images = from.images
+            title = from.title,
+            id = from.id,
+            genres = from.genres,
+            images = from.images,
+            poster = from.poster
         )
     }
 }
@@ -24,31 +25,33 @@ class DigestMovieMapper : Mapper<MovieDigestResponse, Movie> {
 class DetailedMovieMapper : Mapper<MovieDetailResponse, Movie> {
     override fun mapFrom(from: MovieDetailResponse): Movie {
         return Movie(
-          title = from.title,
-          id = from.id,
-          genres = from.genres,
-          images = from.images,
-          director = from.director,
-          actors = from.actors,
-          type = from.type,
-          metaScore = from.metascore,
-          year = from.year
+            title = from.title,
+            id = from.id,
+            genres = from.genres,
+            images = from.images,
+            director = from.director,
+            actors = from.actors,
+            poster = from.poster,
+            type = from.type,
+            metaScore = from.metascore,
+            year = from.year,
+            plot = from.plot
         )
     }
 }
 
 class MovieSequenceMapper(
-  private val movieMapper: DigestMovieMapper
+    private val movieMapper: DigestMovieMapper
 ) : Mapper<MovieListResponse, MovieSequence> {
     override fun mapFrom(from: MovieListResponse): MovieSequence {
         return MovieSequence(
-          from.movieDigests?.let { it.map { m -> movieMapper.mapFrom(m) } } ?: emptyList(),
-          PageData(
-            pageNumber = from.metadata.currentPage ?: 0,
-            pages = from.metadata.pageCount ?: 0,
-            totalCount = from.metadata.totalCount ?: 0,
-            perPage = from.metadata.perPage ?: 0
-          )
+            from.movieDigests?.let { it.map { m -> movieMapper.mapFrom(m) } } ?: emptyList(),
+            PageData(
+                pageNumber = from.metadata.currentPage ?: 0,
+                pages = from.metadata.pageCount ?: 0,
+                totalCount = from.metadata.totalCount ?: 0,
+                perPage = from.metadata.perPage ?: 0
+            )
         )
     }
 

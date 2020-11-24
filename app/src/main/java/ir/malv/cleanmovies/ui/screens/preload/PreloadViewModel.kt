@@ -1,6 +1,5 @@
-package ir.malv.cleanmovies
+package ir.malv.cleanmovies.ui.screens.preload
 
-import androidx.compose.foundation.currentTextStyle
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -8,45 +7,49 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ir.malv.cleanmovies.domain.entity.User
-import ir.malv.cleanmovies.domain.exception.CleanMovieException
-import ir.malv.cleanmovies.domain.repository.MovieRepository
 import ir.malv.cleanmovies.domain.repository.UserRepository
-import ir.malv.cleanmovies.exception.UserNotFoundException
 import ir.malv.cleanmovies.response.Response
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
 
-class MainViewModel @ViewModelInject constructor(
-    private val userRepository: UserRepository,
-    private val movieRepository: MovieRepository
+class PreloadViewModel @ViewModelInject constructor(
+    private val userRepository: UserRepository
 ) : ViewModel() {
 
     var currentUserState: Response<User> by mutableStateOf(Response.IDLE())
 
-    fun fetchUserInstance() = viewModelScope.launch {
+    suspend fun fetchUserInstance(): Response<User> {
         currentUserState = Response.LOADING()
         val currentUser = userRepository.currentUser()
         currentUserState = if (currentUser == null) {
-            Response.Fail(CleanMovieException(("User was not cached")))
+            Response.EMPTY()
         } else {
-            Response.Success(currentUser)
+            Response.SUCCESS(currentUser)
         }
+        return currentUserState
     }
 
     fun login(email: String, password: String) = viewModelScope.launch {
         currentUserState = Response.LOADING()
         currentUserState = try {
-            Response.Success(userRepository.login(email, password))
+            Response.SUCCESS(userRepository.login(email, password))
+        } catch (e: HttpException) {
+            val code = e.code()
+            Response.FAIL(e, code)
         } catch (e: Exception) {
-            Response.Fail(CleanMovieException("Failed to login"))
+            Response.FAIL(e)
         }
     }
 
     fun register(email: String, password: String, name: String) = viewModelScope.launch {
         currentUserState = Response.LOADING()
         currentUserState = try {
-            Response.Success(userRepository.register(email, password, name))
+            Response.SUCCESS(userRepository.register(email, password, name))
+        } catch (e: HttpException) {
+            val code = e.code()
+            Response.FAIL(e, code)
         } catch (e: Exception) {
-            Response.Fail(CleanMovieException("Failed to register")) // TODO: Error codes must be specific
+            Response.FAIL(e)
         }
     }
 }

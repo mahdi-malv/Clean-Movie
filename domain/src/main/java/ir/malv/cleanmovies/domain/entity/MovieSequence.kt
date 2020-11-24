@@ -1,7 +1,7 @@
 package ir.malv.cleanmovies.domain.entity
 
 data class MovieSequence(
-  val genres: List<Movie>,
+  val movies: List<Movie>,
   val pageData: PageData
 )
 

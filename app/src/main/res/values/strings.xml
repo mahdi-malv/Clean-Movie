@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Clean Movies</string>
+    <string name="title_activity_splash">Splash Screen</string>
+    <string name="title_activity_preload">Preparation</string>
 </resources>

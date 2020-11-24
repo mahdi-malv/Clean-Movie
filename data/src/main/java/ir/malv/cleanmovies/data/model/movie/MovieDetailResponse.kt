@@ -15,7 +15,7 @@ data class MovieDetailResponse(
     @Json(name = "genres")
     val genres: List<String>? = null,
     @Json(name = "id")
-    val id: Int? = null,
+    val id: Int,
     @Json(name = "images")
     val images: List<String>? = null,
     @Json(name = "imdb_id")

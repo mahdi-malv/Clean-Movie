@@ -1,6 +1,7 @@
 package ir.malv.cleanmovies.di
 
 import android.content.Context
+import android.util.Log
 import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
@@ -15,6 +16,7 @@ import ir.malv.cleanmovies.data.enhanceByDataModule
 import ir.malv.cleanmovies.data.mapper.*
 import ir.malv.cleanmovies.data.repository.MoviesRepositoryImpl
 import ir.malv.cleanmovies.data.repository.UserRepositoryImpl
+import ir.malv.cleanmovies.data.store.UserStorage
 import ir.malv.cleanmovies.domain.repository.MovieRepository
 import ir.malv.cleanmovies.domain.repository.UserRepository
 import okhttp3.OkHttpClient
@@ -35,22 +37,20 @@ object AppModule {
 
 
     @Provides
-    fun providesOkHttp(logger: HttpLoggingInterceptor) = OkHttpClient.Builder()
-        .addInterceptor { chain ->
-            val originalRequest = chain.request()
-            val requestWithHeaders = originalRequest.newBuilder()
-                .header("Accept", "application/vnd.github.v3+json")
-                .method(originalRequest.method, originalRequest.body)
-                .build()
-            chain.proceed(requestWithHeaders)
-        }
-        .addInterceptor(logger)
+    fun providesOkHttp() = OkHttpClient.Builder()
+//        .addInterceptor { chain ->
+//            val originalRequest = chain.request()
+//            val requestWithHeaders = originalRequest.newBuilder()
+//                .header("Accept", "application/json")
+//                .method(originalRequest.method, originalRequest.body)
+//                .build()
+//            Log.d("App(Net)", """
+//                Method: ${originalRequest.method}
+//            """.trimIndent())
+//            chain.proceed(requestWithHeaders)
+//        }
+        .addInterceptor(HttpLoggingInterceptor().also { it.setLevel(HttpLoggingInterceptor.Level.BODY) })
         .build()
-
-    @Provides
-    fun providesLoggingInterceptor() =
-        HttpLoggingInterceptor().also { it.level = HttpLoggingInterceptor.Level.BASIC }
-
 
     @Provides
     fun providersMoshi(): Moshi = Moshi.Builder()
@@ -78,11 +78,11 @@ object RepoModule {
         )
     }
     @Provides
-    fun providesUserRepo(userApi: UserApi, appDatabase: AppDatabase): UserRepository {
+    fun providesUserRepo(@ApplicationContext context: Context, userApi: UserApi, appDatabase: AppDatabase): UserRepository {
         return UserRepositoryImpl(
             userApi = userApi,
             userMapper = UserMapper(),
-            appDatabase = appDatabase
+            userStorage = UserStorage(context)
         )
     }
 

@@ -16,14 +16,14 @@ interface UserApi {
     ): UserResponse
 
 
-    @POST("/oauth/token?grant_type=\"password\"")
+    @POST("/oauth/token?grant_type=password")
     suspend fun applyForToken(
       @Query("username") userName: String,
       @Query("password") password: String
     ): TokenResponse
 
 
-    @POST("/oauth/token?grant_type=\"refresh_token\"")
+    @POST("/oauth/token?grant_type=refresh_token")
     suspend fun applyForToken(
       @Query("refresh_token") refreshToken: String
     ): TokenResponse

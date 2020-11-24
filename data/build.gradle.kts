@@ -1,4 +1,7 @@
+import com.google.protobuf.gradle.*
+
 plugins {
+    id("com.google.protobuf") version "0.8.12"
     id("com.android.library")
     kotlin("android")
     kotlin("kapt")
@@ -12,7 +15,6 @@ android {
         targetSdkVersion(Versions.Build.targetSdk)
         versionCode = Versions.versionCode
         versionName = Versions.versionName
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -48,15 +50,18 @@ dependencies {
     // Network
     implementation(Libs.Network.Retrofit.retrofit)
     implementation(Libs.Network.Retrofit.converterMoshi)
-    implementation(Libs.Network.OkHttp.loggingInterceptor)
     implementation(Libs.Network.OkHttp.okHttp)
+    implementation(Libs.Network.OkHttp.logging)
     implementation(Libs.Network.Moshi.moshi)
     kapt(Libs.Network.Moshi.codeGen)
 
-    // Database
+    // Storage
     implementation(Libs.Room.ktx)
     implementation(Libs.Room.runtime)
     kapt(Libs.Room.compiler)
+    implementation(Libs.AndroidX.DataStore.typed)
+    implementation(Libs.AndroidX.DataStore.protobuf)
+
 
     // Test
     testImplementation(Libs.Test.junit)
@@ -64,3 +69,19 @@ dependencies {
     androidTestImplementation(Libs.Test.testExt)
     androidTestImplementation(Libs.Network.OkHttp.mockServer)
 }
+
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:3.10.0"
+    }
+    generateProtoTasks {
+        all().forEach { task ->
+            task.plugins{
+                create("java") {
+                    option("lite")
+                }
+            }
+        }
+    }
+}
+

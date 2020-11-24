@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+option java_package = "ir.malv.cleanmovies.data.gen";
+option java_multiple_files = true;
+
+message UserStore {
+  message TokenStore {
+    string accessToken = 1;
+    string refreshToken = 2;
+    int64 expireDate = 3;
+  }
+  int32 id = 1;
+  string email = 2;
+  TokenStore token = 3;
+}

@@ -1,7 +1,8 @@
-package ir.malv.cleanmovies.ui
+package ir.malv.cleanmovies.ui.utils
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
@@ -28,7 +29,7 @@ private val LightColorPalette = lightColors(
 )
 
 @Composable
-fun CleanMoviesTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable() () -> Unit) {
+fun CleanMoviesTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
     val colors = if (darkTheme) {
         DarkColorPalette
     } else {
@@ -41,4 +42,13 @@ fun CleanMoviesTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Compo
       shapes = shapes,
       content = content
     )
+}
+
+@Composable
+fun CleanMovieSurface(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
+    CleanMoviesTheme(darkTheme = darkTheme) {
+        Surface(color = MaterialTheme.colors.background) {
+            content()
+        }
+    }
 }

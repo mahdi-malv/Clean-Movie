@@ -1,22 +1,26 @@
 # Clean Movies
 
-A project revealing **all modern (yet preview) android tools** along with **Clean architecture**
+An app that shows list of movies
 
-> **Web services**
->
-> The app uses an open source RESTful webservice called ["Movies API"](https://github.com/abbas-oveissi/MoviesApi_ir)
+<img src="show.gif" />
 
-### Prerequisites
-* Android studio 4.2+ (Run `jetpack-compose`)
+Uses following architectures:
 
-## Usage 
+* Clean architecture
+* MVVM
 
-- Clone the repo
-- Open it with Android studio
 
----
 
-## Target
+### Tools and libraries
+
+- [[**Kotlin coroutines**](https://kotlinlang.org/docs/reference/coroutines-overview.html)]
+- [[**Gradle Kotlin Dsl**](https://docs.gradle.org/current/userguide/kotlin_dsl.html)]
+- [[**Hilt**](https://developer.android.com/training/dependency-injection/hilt-android)]
+- [[**Jetpack compose**](https://developer.android.com/jetpack/compose/tutorial)]
+- [[**Navigation (with compose)**](https://developer.android.com/jetpack/compose/navigation)]
+- [[**Retrofit and OKHttp**](https://square.github.io/retrofit/)]
+- [[**Moshi**](https://github.com/square/moshi)]
+- [[**Jetpack proto DataStore**](https://developer.android.com/topic/libraries/architecture/datastore)]
 
 
 

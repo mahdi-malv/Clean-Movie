@@ -1,4 +1,4 @@
-package ir.malv.cleanmovies.ui
+package ir.malv.cleanmovies.ui.utils
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle

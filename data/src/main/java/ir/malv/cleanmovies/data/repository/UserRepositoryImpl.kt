@@ -1,30 +1,26 @@
 package ir.malv.cleanmovies.data.repository
 
+import android.util.Log
 import ir.malv.cleanmovies.data.api.UserApi
-import ir.malv.cleanmovies.data.db.AppDatabase
+import ir.malv.cleanmovies.data.gen.UserStore
 import ir.malv.cleanmovies.data.mapper.UserMapper
 import ir.malv.cleanmovies.data.model.user.TokenResponse
 import ir.malv.cleanmovies.data.model.user.UserResponse
+import ir.malv.cleanmovies.data.store.UserStorage
 import ir.malv.cleanmovies.domain.entity.User
 import ir.malv.cleanmovies.domain.repository.UserRepository
 
 class UserRepositoryImpl(
     private val userApi: UserApi,
     private val userMapper: UserMapper,
-  private val appDatabase: AppDatabase
+    private val userStorage: UserStorage
 ) : UserRepository {
 
     private var currentUser: User? = null
 
     override suspend fun currentUser(): User? {
         if (currentUser != null) return currentUser
-
-        val savedUser = appDatabase.userDao().getUser() ?: return null
-        var savedToken = appDatabase.tokenDao().getUserToken() ?: return null
-        if (savedToken.expriesIn <= System.currentTimeMillis()) {
-            savedToken = userApi.applyForToken(savedToken.refreshToken)
-        }
-        return userMapper.transfer(savedUser, savedToken)
+        return userMapper.mapFrom(userStorage.get()).takeIf { it.email.isNotEmpty() }
     }
 
     override suspend fun login(email: String, password: String): User {
@@ -44,10 +40,20 @@ class UserRepositoryImpl(
     private suspend fun storeToken(
       token: TokenResponse,
       user: UserResponse
-    ): User = appDatabase.let {
-        it.userDao().insertUser(user)
-        it.tokenDao().insertUserToken(token)
-        userMapper.transfer(user, token)
+    ): User {
+        val userStore = UserStore.newBuilder()
+            .setId(user.id)
+            .setEmail(user.email)
+            .setToken(
+                UserStore.TokenStore.newBuilder()
+                    .setAccessToken(token.accessToken)
+                    .setRefreshToken(token.refreshToken)
+                    .setExpireDate(token.expiresIn)
+                    .build()
+            )
+            .build()
+        userStorage.set(userStore)
+        return userMapper.mapFrom(userStore)
     }
 
 

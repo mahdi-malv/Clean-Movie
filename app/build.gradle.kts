@@ -4,6 +4,7 @@ plugins {
     kotlin("kapt")
     kotlin("android.extensions")
     id("dagger.hilt.android.plugin")
+    id("kotlin-android")
 }
 
 android {
@@ -58,6 +59,7 @@ dependencies {
     implementation(Libs.AndroidX.Compose.ui)
     implementation(Libs.AndroidX.Compose.tooling)
     implementation(Libs.AndroidX.Compose.material)
+    implementation(Libs.AndroidX.Compose.runtimeLiveData)
     implementation(Libs.AndroidX.Compose.iconExt)
     implementation(Libs.AndroidX.Compose.Ext.coilImage)
 
@@ -77,22 +79,34 @@ dependencies {
     // Network
     implementation(Libs.Network.Retrofit.retrofit)
     implementation(Libs.Network.Retrofit.converterMoshi)
-    implementation(Libs.Network.OkHttp.loggingInterceptor)
     implementation(Libs.Network.OkHttp.okHttp)
+    implementation(Libs.Network.OkHttp.logging)
     implementation(Libs.Network.Moshi.moshi)
     kapt(Libs.Network.Moshi.codeGen)
+
+    // Image loading
+    implementation(Libs.Image.accompanist_coil)
 
     // Database
     implementation(Libs.Room.ktx)
     implementation(Libs.Room.runtime)
     kapt(Libs.Room.compiler)
+    implementation(Libs.AndroidX.DataStore.typed)
 
     // Utils
-    implementation(Libs.Utils.markdown)
+    implementation(Libs.Utils.jMustache)
 
     // Test
     testImplementation(Libs.Test.junit)
+    testImplementation(Libs.Network.OkHttp.mockServer)
     androidTestImplementation(Libs.Test.espresso)
     androidTestImplementation(Libs.Test.testExt)
     androidTestImplementation(Libs.Network.OkHttp.mockServer)
+}
+
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile::class).configureEach {
+    kotlinOptions {
+        jvmTarget = "1.8"
+        freeCompilerArgs = freeCompilerArgs + listOf("-Xallow-jvm-ir-dependencies", "-Xskip-prerelease-check")
+    }
 }

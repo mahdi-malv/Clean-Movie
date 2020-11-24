@@ -17,9 +17,9 @@ data class TokenResponse(
   val accessToken: String,
 
 
-  @Json(name = "expries_in")
-  @ColumnInfo(name = "expries_in")
-  val expriesIn: Long,
+  @Json(name = "expires_in")
+  @ColumnInfo(name = "expires_in")
+  val expiresIn: Long,
 
 
   @Json(name = "refresh_token")
